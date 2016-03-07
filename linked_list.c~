@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+  int value;
+  struct node * next;
+} node_t;
+
+void print_list(node_t * head)
+{
+  node_t * current = head;
+ 
+  while(current != NULL)
+  {
+    printf("%d, ", current->value);
+    current = current->next;
+  }
+}
+
+void add_first(node_t ** head, int value)
+{
+  node_t * new_node;
+  new_node = malloc(sizeof(node_t));
+
+  new_node->value = value;
+  new_node->next = *head;
+  *head = new_node;
+}
+
+void add_last(node_t * head, int value)
+{
+  node_t * current = head;
+  while(current->next != NULL)
+  {
+    current = current->next;
+  }
+
+  current->next = malloc(sizeof(node_t));
+  current->next->value = value;
+}
+
+
+int remove_first(node_t ** head)
+{
+  if(*head == NULL) return -1;
+ 
+  int value = (*head)->value;
+  node_t * next_node = (*head)->next;
+  free(*head);
+  *head = next_node;
+
+  return value;
+}
+
+int remove_last(node_t * head)
+{
+  int value = 0;
+  if(head->next == NULL)
+  {
+    value = head->value;
+    free(head);
+    //head = NULL;
+    return value;
+  }
+
+    printf("asdf");
+  node_t * current = head;
+  while(current->next->next != NULL)
+  {
+    current = current->next;
+  }
+  return remove_last(current);
+}
+
+int main()
+{
+  // declare list
+  node_t * list = malloc(sizeof(node_t));
+  list->value = 1;
+  list->next = NULL;
+  
+  // manipulate list
+  add_first(&list, 0);
+  add_last(list, 2);
+  add_last(list, 3);
+  add_last(list, 4);
+  remove_first(&list);
+  remove_last(list);
+
+  // print list
+  print_list(list);
+  printf("\n");
+}
